@@ -1,0 +1,10 @@
+{
+  "users": { 
+    "admin" : { "username": "admin", "password": "password", "userRole" : "admin" }
+  }
+  "onezone" : "172.18.0.2",
+  "oneproviders" : {
+    "TriesteProvider" : { "name" : "TriesteProvider", "ip" : "172.18.0.3" },
+    "HeidelbergProvider" : { "name" : "HeidelbergProvider", "ip" : "172.18.0.4" }
+  }
+}
