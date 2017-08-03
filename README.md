@@ -147,7 +147,7 @@ run the other commands of this tutorial as `lbt` user.
 Table 1: IPs of the Onedata installation with pre-configured VM <a name="t-vm-ip"></a>
 
 Congratulation, now Onedata is running!
-You can now jump to [Step 2](#step-2) to continue the tutorial.
+You can now jump to [Step 2](#step-2---use-onedata) to continue the tutorial.
 We will assume that all the next commands are executend inside the VM.
 
 If you want to clean up all your previous attempts,
@@ -289,7 +289,7 @@ Note that only `root` can deploy Onezone and Oneprovider, while you should
 run the other commands of this tutorial as normal user.
 
 Congratulation, now Onedata is running!
-You can now jump to [Step 2](#step-2) to continue the tutorial.
+You can now jump to [Step 2](#step-2---use-onedata) to continue the tutorial.
 
 If you want to clean up all your previous attempts,
 run as lbt user (not as root)
@@ -301,7 +301,7 @@ this tutorial from the beginning.
 
 **Remember that the access URL of your LBT Zone webpage is `https://<onezone-ip>`.**
 
-## Step 2 - Use Onedata <a name=step-2"></a>
+## Step 2 - Use Onedata
 
 Now we are going to use the Onedata instance you just deployed. We assume
 that all the shell commands are executed as normal user, not root.
