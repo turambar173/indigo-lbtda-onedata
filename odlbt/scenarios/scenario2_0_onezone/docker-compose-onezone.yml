@@ -1,0 +1,64 @@
+#scenario2_0_onezone
+version: '2.0'
+
+services:
+  node1.onezone.localhost:
+    image: onedata/onezone:3.0.0-rc16
+    hostname: node1.onezone.localhost
+    # dns: 8.8.8.8 # uncomment if container can't ping any domain
+    container_name: onezone-2
+    volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        # configuration persistance
+        - "${ONEZONE_CONFIG_DIR}:/volumes/persistence"
+        # OpenId configuration
+        #- "${AUTH_PATH}:/var/lib/oz_worker/auth.config"
+        # DNS configuration
+        #- "${DNS_PATH}:/var/lib/oz_worker/dns.config"
+        # Onepanel
+        #- "${OZ_PRIV_KEY_PATH}:/etc/oz_panel/certs/key.pem"
+        #- "${OZ_CERT_PATH}:/etc/oz_panel/certs/cert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_panel/cacerts/cacert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_worker/cacerts/cacert.pem"
+    networks:
+      scenario2:
+        ipv4_address: 172.18.0.2
+    environment:
+      #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
+      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
+      ONEPANEL_BATCH_MODE: "true"
+      ONEZONE_CONFIG: |
+        cluster:
+          domainName: "onezone.localhost"
+          autoDeploy: true
+          nodes:
+            n1:
+              hostname: "node1"
+          managers:
+            mainNode: "n1"
+            nodes:
+              - "n1"
+          workers:
+            nodes:
+              - "n1"
+          databases:
+            nodes:
+              - "n1"
+        onezone:
+          name: "LBT Zone"
+          domainName: "onezone.localhost"
+        onepanel:
+          users:
+            "admin":
+              password: "password"
+              userRole: "admin"
+            "user":
+              password: "password"
+              userRole: "regular"
+
+networks:
+  scenario2:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.18.0.0/24

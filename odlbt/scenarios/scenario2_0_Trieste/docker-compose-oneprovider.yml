@@ -1,0 +1,70 @@
+#scenario2_0_Trieste
+version: '2.0'
+
+services:
+  node1.trieste.localhost:
+    image: onedata/oneprovider:3.0.0-rc16
+    hostname: node1.trieste.localhost
+    # dns: 8.8.8.8 # uncomment if container can't ping any domain
+    container_name: trieste-2
+    volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        # configuration persistence
+        - "${ONEPROVIDER_CONFIG_DIR}:/volumes/persistence"
+        # data persistence
+        - "${ONEPROVIDER_DATA_DIR}:/volumes/storage"
+        # Oneprovider
+        #- "${OP_PRIV_KEY_PATH}:/etc/op_panel/certs/key.pem"
+        #- "${OP_CERT_PATH}:/etc/op_panel/certs/cert.pem"
+        #- "${OP_CACERT_PATH}:/etc/op_panel/cacerts/cacert.pem"
+        #- "${OP_CACERT_PATH}:/etc/oz_worker/cacerts/cacert.pem"
+    networks:
+      scenario2:
+        ipv4_address: 172.18.0.3
+    environment:
+      #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
+      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
+      ONEPANEL_BATCH_MODE: "true"
+      ONEPROVIDER_CONFIG: |
+        cluster:
+          domainName: "trieste.localhost"
+          nodes:
+            n1:
+              hostname: "node1"
+          managers:
+            mainNode: "n1"
+            nodes:
+              - "n1"
+          workers:
+            nodes:
+              - "n1"
+          databases:
+            nodes:
+              - "n1"
+          storages:
+            NFS:
+              type: "posix"
+              mountPoint: "/volumes/storage"
+        oneprovider:
+          register: true
+          name: "Trieste"
+          redirectionPoint: "https://172.18.0.3" # OR DOCKER IP ADDRESS
+          geoLatitude: 45.0
+          geoLongitude: 15.0
+        onezone:
+          domainName: "172.18.0.2" # OR DOCKER IP ADDRESS
+        onepanel:
+          users:
+            "admin":
+              password: "password"
+              userRole: "admin"
+            "user":
+              password: "password"
+              userRole: "regular"
+
+networks:
+  scenario2:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.18.0.0/24
