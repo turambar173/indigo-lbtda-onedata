@@ -46,7 +46,7 @@ More information about Onedata can be found in the
 ### LBT Distributed Archive Use Case
 
 The Large Binocular Telescope (LBT) is an astronomical optical telescope
-located on Mount Graham in southeastern Arizona at an altitude of 3200m.
+located on Mount Graham in southeastern Arizona.
 The LBT is an international collaboration of serveral partners, among which
 Italy (INAF: Istituto Nazionale di Astrofisica) and Germany (LBTB: LBT
 Beteiligungsgesellschaft).
@@ -58,10 +58,11 @@ in a distributed archive, with geographically separated storages.
 The flexibility of Onedata can provide storage solutions suitable for
 LBT requirements.
 We just need two spaces, a INAF space supported by a Oneprovider in Trieste
-a LBTB space supporter by a Oneprovider in Heidelberg.
+and a LBTB space supporter by a Oneprovider in Heidelberg.
 
 In this tutorial we are not going to create a fully operative
-distributed archive, but it is just a collection of examples to 
+distributed archive, but it is just a collection of examples to mimic
+the real configuration in order to 
 show the main Onedata features to create user, upload data and metadata,
 manage access and everything useful to create a distributed archive.
 
@@ -70,7 +71,8 @@ manage access and everything useful to create a distributed archive.
 To complete this tutorial you need to have a running instance of Onedata.
 
 We have prepared a Virtual Machine with Onezone and Oneprovider already installed.
-You can download it at this URL <http://URL>. Then follow the instructions in the
+You can download it at this URL <https://owncloud.ia2.inaf.it/index.php/s/s9rIR4eozV2QR6H>.
+Then follow the instructions in the
 [Deploy Onedata with preconfigured VM section](#deploy-vm). This is the recommended way
 to complete this tutorial.
 
@@ -88,7 +90,7 @@ and deploy Onedata with all its features.
 In this section we are going to deploy Onedata using a pre-configured Virtual Machine (VM).
 This method is derived from the scenario 2.0 of the official Onedata getting started guide.
 
-Download the VM at this URL <http://URL> 
+Download the VM at this URL <https://owncloud.ia2.inaf.it/index.php/s/s9rIR4eozV2QR6H>.
 Import the `.ova` file in VirtualBox and run the VM.
 
 The login credentials for the VM are
@@ -100,7 +102,7 @@ The login credentials for the VM are
     Password: s3cret
 
 The present GIT repository is already cloned in the home of the `lbt` user, and 
-the `odlbt` package installed. However, be sure to have the last version, running
+the `odlbt` package is already installed. However, be sure to have the last version, running
 
     cd /home/lbt/indigo-lbtda-onedata
     git pull
@@ -108,8 +110,8 @@ the `odlbt` package installed. However, be sure to have the last version, runnin
     sudo make install
 
 Onedata components are deployed using docker containers. If you are intersted in 
-docker check the website <https://www.docker.com>. You do not need to be
-a docker expert to complete this tutorial. Just imagine that a container
+docker, check the website <https://www.docker.com>. You do not need to be
+a docker expert to complete this tutorial. Just imagine that a docker container
 contains everything required to make a piece of software (Onedata in our case)
 running.
 
@@ -205,70 +207,70 @@ Then follow these steps for all the 3 machines.
 1. Install CentOS 7. It is not mandatory, but warmly suggested to use CentOS.
 Be sure your system is up to date
 
-	yum update
-    yum install wget
+        yum update
+        yum install wget
 
 2. Check hostname, IP address and ports. Be sure that each machine
 can see to the two others.
 3. Install docker and docker-compose
 
-    tee /etc/yum.repos.d/docker.repo <<-'EOF'
-    [dockerrepo]
-    name=Docker Repository
-    baseurl=https://yum.dockerproject.org/repo/main/centos/7/
-    enabled=1
-    gpgkey=https://yum.dockerproject.org/gpg
-    gpgcheck=1
-    EOF
+        tee /etc/yum.repos.d/docker.repo <<-'EOF'
+        [dockerrepo]
+        name=Docker Repository
+        baseurl=https://yum.dockerproject.org/repo/main/centos/7/
+        enabled=1
+        gpgkey=https://yum.dockerproject.org/gpg
+        gpgcheck=1
+        EOF
 
-    curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+        curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+        chmod +x /usr/local/bin/docker-compose
 
-    yum install docker-engine
+        yum install docker-engine
 
 4. Install GIT
 
-    yum install git
+        yum install git
 
 5. Install some python requirements
 
-    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-    python get-pip.py
-    pip install docopt
-    pip install numpy
-    pip install pyfits
+        curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+        python get-pip.py
+        pip install docopt
+        pip install numpy
+        pip install pyfits
 
 6. Clone the GIT repository (we suggest to clone the repository as normal
 user, not as root)
 
-    git clone https://github.com/turambar173/indigo-lbtda-onedata.git
+        git clone https://github.com/turambar173/indigo-lbtda-onedata.git
 
 7. Edit the `.yml` files with the IP of your machines. 
 Enter the directory 
 
-	cd indigo-lbtda-onedata/odlbt/scenarios
+        cd indigo-lbtda-onedata/odlbt/scenarios
 	
-Edit the file scenario3_0_Heidelberg/docker-compose-oneprovider.yml
-at the lines 62 and 66 entering respectively the IP of the machine hosting Heidelberg provider
-and the IP of the machine hosting Onezone.
-In the same way edit the file scenario3_0_Trieste/docker-compose-oneprovider.yml
-at the lines 62 and 66 entering respectively the IP of the machine hosting Trieste provider
-and the IP of the machine hosting Onezone.
-The `.yml` file of the Onezone does not need to be changed.
+    Edit the file scenario3_0_Heidelberg/docker-compose-oneprovider.yml
+    at the lines 62 and 66 entering respectively the IP of the machine hosting Heidelberg provider
+    and the IP of the machine hosting Onezone.
+    In the same way edit the file scenario3_0_Trieste/docker-compose-oneprovider.yml
+    at the lines 62 and 66 entering respectively the IP of the machine hosting Trieste provider
+    and the IP of the machine hosting Onezone.
+    The `.yml` file of the Onezone does not need to be changed.
 
 8. Install the `odlbt` package
 
-	cd indigo-lbtda-onedata/odlbt
-	sudo make install
+        cd indigo-lbtda-onedata/odlbt
+        sudo make install
 
 9. Install oneclient (if you need help check
 [this link](https://onedata.org/docs/doc/using_onedata/oneclient.html))
 
-    curl -sS  http://get.onedata.org/oneclient.sh | bash
+        curl -sS  http://get.onedata.org/oneclient.sh | bash
 
 10. Remember to start the docker daemon
 
-    service docker start
+        service docker start
 
 To deploy Onezone and the two Oneproviders you need to run as root
 the three following commands, the first in the Onezone machine, the second
@@ -279,7 +281,7 @@ machine.
     run_onedata scenario3.0 provider Trieste
     run_onedata scenario3.0 provider Heidelberg
 
-In each shell wait for the green congratulation message. In particular wait Onezone
+In each shell wait for the final congratulation message. In particular wait Onezone
 is deployed before deploying the two Oneproviders. Each of these commands
 deploys a docker container, one for Onezone and two for the two providers.
 
@@ -289,15 +291,23 @@ run the other commands of this tutorial as normal user.
 Congratulation, now Onedata is running!
 You can now jump to [Step 2](#step-2) to continue the tutorial.
 
+If you want to clean up all your previous attempts,
+run as lbt user (not as root)
+
+    clean_onedata
+
+all configuration files will be deleted, allowing you to restart
+this tutorial from the beginning.
+
 **Remember that the access URL of your LBT Zone webpage is `https://<onezone-ip>`.**
 
 ## Step 2 - Use Onedata <a name=step-2"></a>
 
-Now we are goint to use the Onedata instance you just deployed. We assume
+Now we are going to use the Onedata instance you just deployed. We assume
 that all the shell commands are executed as normal user, not root.
 
 You can access Onedata using a web browser, therefore go to your LBT Zone webpage
-(the url is <https://172.18.0.2> if you are using the pre-configured VM) and sign in.
+(the URL is <https://172.18.0.2> if you are using the pre-configured VM) and sign in.
 Onedata comes with the admin user already created with these credentials
 
     Username: admin
@@ -349,7 +359,7 @@ Oneproviders
     odlbt config --global provider Trieste <trieste-provider-ip>
     odlbt config --global provider Heidelberg <heidelberg-provider-ip>
 
-If you are using the pre-configured VM, use the IPs listed in [the table](#t-vm-ip)
+If you are using the pre-configured VM, use the IPs listed in [the Table 1](#t-vm-ip)
 for the Trieste and Heidelberg provider, otherwise use the IPs of your virtual
 machines created in [Deploy Onedata manually section](#deploy-manually).
 
@@ -359,7 +369,7 @@ configuration file
     odlbt config --global token admin
 
 The access token is necessary to use CDMI API.
-To create new user token we have used the client tokens REST API.
+To create the user token we have used the client tokens REST API.
 If you are interested in more information about it, check
 [this link](https://onedata.org/docs/doc/advanced/rest/onezone/operations/create_client_token.html).
 
@@ -388,7 +398,7 @@ You can now delete the `newuser.json` file.
 
 Finally, go to LBT Zone webpage and sign in with the `newuser` credentials.
 
-For more information about the used API check
+For more information about the used REST API check
 [this link](https://onedata.org/docs/doc/advanced/rest/onepanel/operations/add_user.html).
 
 ### Create spaces and get support
@@ -440,12 +450,12 @@ and at [this link](https://onedata.org/docs/doc/using_onedata/space_management.h
 ### Upload data
 
 Now it is time to upload some data to your spaces.
-You can download some public LBT files at [this url](https://owncloud.ia2.inaf.it/index.php/s/mV50adXpRFXaqWR).
+You can download some public LBT files at this URL <https://owncloud.ia2.inaf.it/index.php/s/mV50adXpRFXaqWR>.
 Untar the archive and use the files in the folder *Test files* to perform some upload test.
 
 The easiest way to upload data is using the web interface.
 Go to your LBT Zone webpage and sign in as admin.
-Now you can see in the map of the world the two green points: these
+Now you can see in the map of the world two green icons: these
 are the providers that support your spaces.
 Click on the Trieste provider icon on the map and click on the button *Go to your files*.
 You will be redirected to Oneprovider web interface, where you can access and manage your files.
@@ -469,7 +479,7 @@ More informations about this topic are available in the official
 
 ### Access your spaces with POSIX
 
-In Onedata files can also be accessed directly via POSIX protocol, using Oneclient tool.
+In Onedata, files can also be accessed directly via POSIX protocol, using Oneclient tool.
 With Oneclient you can mount your spaces in your local file system tree. 
 
 The basic command line syntax to mount spaces using a specific Oneprovider is
@@ -558,19 +568,19 @@ Now json files can be uploaded as metadata in Onedata with this command
     odlbt metadata add -p <provider-name> -s <space-name> <file.json>...
 
 where you have to set the Oneprovider name and the space name where the files
-are, including the path in Onedata. This command will connect to <provider-name>
-using CDMI API and upload <file.json> metadata to file stored in <space-name>.
+are, including the path in Onedata. This command will connect to provider-name
+using CDMI API and upload file.json metadata to file stored in space-name.
 Therefore you will run something like
 
     odlbt metadata add -p Trieste -s INAF/2014 luci.2014*.json
     odlbt metadata add -p Trieste -s INAF/2015 luci.2015*.json
 
 To check that the metadata have been correctly added enter the webpage,
-go to the INAF space and select the *Show metadata* button to the right of the file name.
+go to the INAF space and select the *Show metadata* button at the right of the file name.
 
 Repeat the same procedure also for LBTB files.
 
-In principle you can use any of your provider as <provider-name>,
+In principle you can use any of your provider as provider-name,
 but it is better to use the provider where data you want to add metadata to are.
 Otherwise, if you are directly connected to a provider where data are not,
 Onedata will connect the first Oneprovider to the second Oneprovider to get
@@ -608,10 +618,10 @@ all data in the INAF space. But we want to limit access to 2014 data only.
 So, logout newuser, sign in as admin, and *Go to your files* in the
 Trieste provider.
 
-Select the 2015 folder (only one click), the select the *Change element permissions*
+Select the 2015 folder (only one click), then select the *Change element permissions*
 button in the top menu (the one with the padlock icon).
-As Permission type select *ACL* , then *Add* a new permission rule.
-In the dropdown menu select newuser, and as *Type* select Deny.
+As Permission type select ACL, then *Add* a new permission rule.
+In the dropdown menu select newuser, and as Type select Deny.
 Then click OK to save the new permission rule.
 
 If you now logout admin, and sign in as newuser again, you will see
@@ -628,7 +638,7 @@ Onedata Solutions for the LBT Distributed Archive.
 If you found any bug or issue, please report to bignamini@oats.inaf.it.
 
 We really appreciate if you can provide us some feedback filling
-[this questionnaire](https://form.jotformeu.com/72141516459355)
+[this questionnaire](https://form.jotformeu.com/72141516459355).
 
 INDIGO-DataCloud receives funding from the European Union's Horizon 2020
 research and innovation programme under grant agreement RIA 653549
