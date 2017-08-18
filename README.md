@@ -7,6 +7,9 @@ In particular, you will learn how you can use Onedata to access, store
 and publish data using Cloud solutions for archiving 
 astronomical files.
 
+As system requirements you need at least 15 GB of free space
+and a software to run virtual machines (suggested VirtualBox).
+
 This tutorial is divided in two steps. First you will learn how to deploy
 Oneprovider and Onezone. Second you will learn how you can use some 
 Onedata features to manage a distributed astronomical archive.
@@ -47,7 +50,7 @@ More information about Onedata can be found in the
 
 The Large Binocular Telescope (LBT) is an astronomical optical telescope
 located on Mount Graham in southeastern Arizona.
-The LBT is an international collaboration of serveral partners, among which
+The LBT is an international collaboration of several partners, among which
 Italy (INAF: Istituto Nazionale di Astrofisica) and Germany (LBTB: LBT
 Beteiligungsgesellschaft).
 
@@ -73,7 +76,7 @@ To complete this tutorial you need to have a running instance of Onedata.
 We have prepared a Virtual Machine with Onezone and Oneprovider already installed.
 You can download it at this URL <https://owncloud.ia2.inaf.it/index.php/s/s9rIR4eozV2QR6H>.
 Then follow the instructions in the
-[Deploy Onedata with preconfigured VM section](#deploy-vm). This is the recommended way
+[Deploy Onedata with preconfigured VM section](#deploy-vm). This is the **recommended** way
 to complete this tutorial.
 
 If you prefer to configure your own virtual machines, you can instead
@@ -88,10 +91,21 @@ and deploy Onedata with all its features.
 ### Deploy Onedata with pre-configured VM <a name="deploy-vm"></a>
 
 In this section we are going to deploy Onedata using a pre-configured Virtual Machine (VM).
+If do not want to use the pre-configured VM, but you prefer to configure your own virtual machines,
+jump to the next section [Deploy Onedata manually](#deploy-manually).
 This method is derived from the scenario 2.0 of the official Onedata getting started guide.
 
 Download the VM at this URL <https://owncloud.ia2.inaf.it/index.php/s/s9rIR4eozV2QR6H>.
 Import the `.ova` file in VirtualBox and run the VM.
+
+**WARNING**: This error can occur related to your VirtualBox network interface configuration
+
+    Error: "Could not start the machine ... because the following physical network interfaces were not found:
+    vboxnet0 (adapter 1)
+    You can either change the machine's network settings or stop the machine."
+
+You can easily fix it adding a new *Host-only network adapter* following this instructions
+<http://islandora.ca/content/fixing-missing-vboxnet0>.
 
 The login credentials for the VM are
 
@@ -136,7 +150,7 @@ deploys a docker container, one for Onezone and two for the two providers.
 Each docker container has its how IP address as listed in the [Table 1](#t-vm-ip).
 
 Note that only `root` can deploy Onezone and Oneprovider, while you should
-run the other commands of this tutorial as `lbt` user.
+run the other commands of this tutorial as `lbt` user. <a name="t-vm-ip"></a>
 
  docker container | Name       | IP in VM
 :----------------:|------------|------------
@@ -144,7 +158,7 @@ run the other commands of this tutorial as `lbt` user.
  2                | Trieste    | 172.18.0.3
  3                | Heidelberg | 172.18.0.4
 
-Table 1: IPs of the Onedata installation with pre-configured VM <a name="t-vm-ip"></a>
+Table 1: IPs of the Onedata installation with pre-configured VM
 
 Congratulation, now Onedata is running!
 You can now jump to [Step 2](#step-2---use-onedata) to continue the tutorial.
@@ -170,6 +184,10 @@ if you need help.
 ### Deploy Onedata manually <a name="deploy-manually"></a>
 
 In this section we are going to deploy Onedata in three different virtual machines.
+This is only for expert Onedata users, so if you do not feal confident, go back to the
+previous section [Deploy Onedata with preconfigured VM](#deploy-vm).
+Instead, if have already downloaded and run the pre-configured Virtual Machine, skip this section and
+jump to [Step 2](#step-2---use-onedata) to continue the tutorial.
 This method is derived from the scenario 3.0 of the official
 [Onedata getting started guide](https://github.com/onedata/getting-started).
 
@@ -177,7 +195,7 @@ First of all create three virtual machines in your virtualization infrastructure
 We suggest they have at least 2GB of RAM, and 16GB of local storage.
 We assume that the IP addresses or hostnames are those listed in [Table 2](#t-threemachines-ip).
 If your IP addresses or hostnames are different, remember to change them 
-later in the `.yml` files.
+later in the `.yml` files.  <a name="t-threemachines-ip"></a>
 
 hostname     | Name       | IP           
 -------------|------------|--------------
@@ -185,7 +203,7 @@ onezone      | LBT Zone   | 192.168.56.50
 oneprovider1 | Trieste    | 192.168.56.61
 oneprovider2 | Heidelberg | 192.168.56.62
 
-Table 2: IPs of the Onedata installation with three different machines <a name="t-threemachines-ip"></a>
+Table 2: IPs of the Onedata installation with three different machines
 
 **Warning**. Onedata uses these ports, therefore check your firewall:
 
@@ -306,7 +324,7 @@ this tutorial from the beginning.
 Now we are going to use the Onedata instance you just deployed. We assume
 that all the shell commands are executed as normal user, not root.
 
-You can access Onedata using a web browser, therefore go to your LBT Zone webpage
+You can access Onedata using a web browser (hint: use Firefox), therefore go to your LBT Zone webpage
 (the URL is <https://172.18.0.2> if you are using the pre-configured VM) and sign in.
 Onedata comes with the admin user already created with these credentials
 
@@ -548,7 +566,7 @@ More informations about this topic are available in the official
 ### Add metadata
 
 For an astronomical archive metadata are crucial. They describe 
-an astronomical resouce (image, spetrum, calibration, etc.)
+an astronomical resource (image, spectrum, calibration, etc.)
 for purposes such as discovery and identification.
 
 Now INAF and LBTB data are in Onedata, so let's add metadata to them.
