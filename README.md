@@ -386,7 +386,14 @@ configuration file
 
     odlbt config --global token admin
 
-The access token is necessary to use CDMI API.
+The access token is necessary to use CDMI API. To have a look of your 
+token and to check if the token has been correctly create run
+
+    odlbt user get token admin
+
+if an empty string or `null` is returned, something went wrong with token creation,
+therefore run the token creation command again.
+
 To create the user token we have used the client tokens REST API.
 If you are interested in more information about it, check
 [this link](https://onedata.org/docs/doc/advanced/rest/onezone/operations/create_client_token.html).
