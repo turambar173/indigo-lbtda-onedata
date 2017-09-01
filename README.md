@@ -115,13 +115,15 @@ The login credentials for the VM are
     Username: root
     Password: s3cret
 
+If necessary, you can change the keyboard layout with the keyboard control module.
+Click on _it_ to change the layout to _us_ and vice versa.
 The present GIT repository is already cloned in the home of the `lbt` user, and 
 the `odlbt` package is already installed. However, be sure to have the last version, running
 
-    cd /home/lbt/indigo-lbtda-onedata
-    git pull
-    cd odlbt
-    sudo make install
+    [lbt@odlbt ~]$ cd /home/lbt/indigo-lbtda-onedata
+    [lbt@odlbt indigo-lbtda-onedata]$ git pull
+    [lbt@odlbt indigo-lbtda-onedata]$ cd odlbt
+    [lbt@odlbt odlbt]$ sudo make install
 
 Onedata components are deployed using docker containers. If you are intersted in 
 docker, check the website <https://www.docker.com>. You do not need to be
@@ -131,23 +133,23 @@ running.
 
 As root, check if docker is running
 
-    service docker status
+    [root@odlbt ~]# service docker status
 
 if it is not running, start it
 
-    service docker start
+    [root@odlbt ~]# service docker start
 
 To deploy Onezone and the two Oneproviders you need three different root shells.
 Run the three following commands, one per shell.
 
-    run_onedata scenario2.0 zone
-    run_onedata scenario2.0 provider Trieste
-    run_onedata scenario2.0 provider Heidelberg
+    [root@odlbt ~]# run_onedata scenario2.0 zone
+    [root@odlbt ~]# run_onedata scenario2.0 provider Trieste
+    [root@odlbt ~]# run_onedata scenario2.0 provider Heidelberg
 
 In each shell wait for the final congratulation message. In particular wait Onezone
 is deployed before deploying the two Oneproviders. Each of these commands
 deploys a docker container, one for Onezone and two for the two providers.
-Each docker container has its how IP address as listed in the [Table 1](#t-vm-ip).
+Each docker container has its own IP address as listed in the [Table 1](#t-vm-ip).
 
 Note that only `root` can deploy Onezone and Oneprovider, while you should
 run the other commands of this tutorial as `lbt` user. <a name="t-vm-ip"></a>
@@ -167,7 +169,7 @@ We will assume that all the next commands are executend inside the VM.
 If you want to clean up all your previous attempts,
 run as lbt user (not as root)
 
-    clean_onedata
+    [lbt@odlbt ~]$ clean_onedata
 
 all configuration files will be deleted, allowing you to restart
 this tutorial from the beginning.
@@ -225,14 +227,14 @@ Then follow these steps for all the 3 machines.
 1. Install CentOS 7. It is not mandatory, but warmly suggested to use CentOS.
 Be sure your system is up to date
 
-        yum update
-        yum install wget
+        [root@odlbt ~]# yum update
+        [root@odlbt ~]# yum install wget
 
 2. Check hostname, IP address and ports. Be sure that each machine
 can see to the two others.
 3. Install docker and docker-compose
 
-        tee /etc/yum.repos.d/docker.repo <<-'EOF'
+        [root@odlbt ~]# tee /etc/yum.repos.d/docker.repo <<-'EOF'
         [dockerrepo]
         name=Docker Repository
         baseurl=https://yum.dockerproject.org/repo/main/centos/7/
@@ -241,32 +243,32 @@ can see to the two others.
         gpgcheck=1
         EOF
 
-        curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
+        [root@odlbt ~]# curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+        [root@odlbt ~]# chmod +x /usr/local/bin/docker-compose
 
-        yum install docker-engine
+        [root@odlbt ~]# yum install docker-engine
 
 4. Install GIT
 
-        yum install git
+        [root@odlbt ~]# yum install git
 
 5. Install some python requirements
 
-        curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-        python get-pip.py
-        pip install docopt
-        pip install numpy
-        pip install pyfits
+        [root@odlbt ~]# curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+        [root@odlbt ~]# python get-pip.py
+        [root@odlbt ~]# pip install docopt
+        [root@odlbt ~]# pip install numpy
+        [root@odlbt ~]# pip install pyfits
 
 6. Clone the GIT repository (we suggest to clone the repository as normal
 user, not as root)
 
-        git clone https://github.com/turambar173/indigo-lbtda-onedata.git
+        [lbt@odlbt ~]$ git clone https://github.com/turambar173/indigo-lbtda-onedata.git
 
 7. Edit the `.yml` files with the IP of your machines. 
 Enter the directory 
 
-        cd indigo-lbtda-onedata/odlbt/scenarios
+        [lbt@odlbt ~]$ cd indigo-lbtda-onedata/odlbt/scenarios
 	
     Edit the file scenario3_0_Heidelberg/docker-compose-oneprovider.yml
     at the lines 62 and 66 entering respectively the IP of the machine hosting Heidelberg provider
@@ -278,26 +280,26 @@ Enter the directory
 
 8. Install the `odlbt` package
 
-        cd indigo-lbtda-onedata/odlbt
-        sudo make install
+        [lbt@odlbt ~]$ cd indigo-lbtda-onedata/odlbt
+        [lbt@odlbt odlbt]$ sudo make install
 
 9. Install oneclient (if you need help check
 [this link](https://onedata.org/docs/doc/using_onedata/oneclient.html))
 
-        curl -sS  http://get.onedata.org/oneclient.sh | bash
+        [lbt@odlbt ~]$ curl -sS  http://get.onedata.org/oneclient.sh | bash
 
 10. Remember to start the docker daemon
 
-        service docker start
+        [root@odlbt ~]# service docker start
 
 To deploy Onezone and the two Oneproviders you need to run as root
 the three following commands, the first in the Onezone machine, the second
 in the Trieste Oneprovider machine and the third in the Heildeberg Oneprovider
 machine.
 
-    run_onedata scenario3.0 zone
-    run_onedata scenario3.0 provider Trieste
-    run_onedata scenario3.0 provider Heidelberg
+    [root@odlbt ~]# run_onedata scenario3.0 zone
+    [root@odlbt ~]# run_onedata scenario3.0 provider Trieste
+    [root@odlbt ~]# run_onedata scenario3.0 provider Heidelberg
 
 In each shell wait for the final congratulation message. In particular wait Onezone
 is deployed before deploying the two Oneproviders. Each of these commands
@@ -312,7 +314,7 @@ You can now jump to [Step 2](#step-2---use-onedata) to continue the tutorial.
 If you want to clean up all your previous attempts,
 run as lbt user (not as root)
 
-    clean_onedata
+    [lbt@odlbt ~]$ clean_onedata
 
 all configuration files will be deleted, allowing you to restart
 this tutorial from the beginning.
@@ -338,8 +340,8 @@ package to avoid the user to remember long and cryptic GET and POST requests.
 The `odlbt` package is already installed in the VM. Conversely, if you have to
 install it, enter the odlbt directory inside this GIT repository and run
 
-    cd indigo-lbtda-onedata/odlbt
-    sudo make install
+    [lbt@odlbt ~]$ cd indigo-lbtda-onedata/odlbt
+    [lbt@odlbt odlbt]$ sudo make install
 
 The package `odlbt` basically works running commands in this way
 
@@ -364,18 +366,19 @@ First create a json file for the admin credentials and save it as `admin.json`
         "userRole" : "admin"
     }
 
-Then add the admin credentials to the configuration file
+Note that standard json requires double quotes as string delimiter.
+Then add the admin credentials to the configuration file, running this command
 
-    odlbt config --global user admin.json
+    [lbt@odlbt ~]$ odlbt config --global user admin.json
 
 You can now delete the `admin.json` file.
 
 Now we are going to add to the configuration file the IPs of Onezone and 
-Oneproviders
+Oneproviders, running
 
-    odlbt config --global zone <onezone-ip>
-    odlbt config --global provider Trieste <trieste-provider-ip>
-    odlbt config --global provider Heidelberg <heidelberg-provider-ip>
+    [lbt@odlbt ~]$ odlbt config --global zone <onezone-ip>
+    [lbt@odlbt ~]$ odlbt config --global provider Trieste <trieste-provider-ip>
+    [lbt@odlbt ~]$ odlbt config --global provider Heidelberg <heidelberg-provider-ip>
 
 If you are using the pre-configured VM, use the IPs listed in [the Table 1](#t-vm-ip)
 for the Trieste and Heidelberg provider, otherwise use the IPs of your virtual
@@ -384,12 +387,12 @@ machines created in [Deploy Onedata manually section](#deploy-manually).
 Now create an access token for the admin user, and store it in the
 configuration file
 
-    odlbt config --global token admin
+    [lbt@odlbt ~]$ odlbt config --global token admin
 
 The access token is necessary to use CDMI API. To have a look of your 
 token and to check if the token has been correctly create run
 
-    odlbt user get token admin
+    [lbt@odlbt ~]$ odlbt user get token admin
 
 if an empty string or `null` is returned, something went wrong with token creation,
 therefore run the token creation command again.
@@ -413,11 +416,11 @@ In this case we have to set `userRole` to `regular`.
 
 Then create the user
 
-    odlbt user add newuser.json
+    [lbt@odlbt ~]$ odlbt user add newuser.json
 
 Then add the newly create user to config
 
-    odlbt config --global user newuser.json
+    [lbt@odlbt ~]$ odlbt config --global user newuser.json
 
 You can now delete the `newuser.json` file.
 
@@ -432,14 +435,14 @@ Now we are going to create new spaces with the `odlbt space` command, using REST
 
 Create the `INAF` space running
 
-    odlbt space add INAF
+    [lbt@odlbt ~]$ odlbt space add INAF
 
 If you now access to the LBT Zone webpage as `admin`, you will see the newly created
 space in the left panel. But you can not yet upload files, you need
 to get support from a provider.
 Let's get some support!
 
-    odlbt space support INAF Trieste 1024
+    [lbt@odlbt ~]$ odlbt space support INAF Trieste 1024
 
 With this command we support the INAF space with the Trieste provider with 1024 MB.
 
@@ -450,8 +453,8 @@ the providers.
 To complete the space configuration for the LBT distributed archive, create
 a space for LBTB and get support from Heidelberg Oneprovider
 
-    odlbt space add LBTB
-    odlbt space support LBTB Heidelberg 1024
+    [lbt@odlbt ~]$ odlbt space add LBTB
+    [lbt@odlbt ~]$ odlbt space support LBTB Heidelberg 1024
     
 For the LBT distributed archive use case we just need the two spaces INAF and LBTB, but if you want more 
 and a complex configuration you can do it. If you are interested,
@@ -466,7 +469,7 @@ For more information about the used API check these links to
 Moreover, you can also create and support space using the webpage, in this case
 you need to get the space token from the webpage itself or running
 
-    odlbt space get INAF token
+    [lbt@odlbt ~]$ odlbt space get INAF token
 
 More informations about this topic are available in the official Onedata documentation at
 [this link](https://onedata.org/docs/doc/getting_started/user_onedata_101.html)
@@ -509,23 +512,23 @@ With Oneclient you can mount your spaces in your local file system tree.
 
 The basic command line syntax to mount spaces using a specific Oneprovider is
 
-    oneclient -i -H <PROVIDER_HOSTNAME> -t <ACCESS_TOKEN> <MOUNT_POINT>
+    [lbt@odlbt ~]$ oneclient -i -H <PROVIDER_HOSTNAME> -t <ACCESS_TOKEN> <MOUNT_POINT>
 
 So create the mount point, for instance
 
-    mkdir ~/MySpaces
+    [lbt@odlbt ~]$ mkdir ~/MySpaces
 
 Then retrive your access token
 
-    export ONECLIENT_ACCESS_TOKEN=$(odlbt user get token admin)
+    [lbt@odlbt ~]$ export ONECLIENT_ACCESS_TOKEN=$(odlbt user get token admin)
     
 and set the provider IP, e.g. Trieste, as environment variable
 
-    export ONECLIENT_PROVIDER_HOST=172.18.0.3
+    [lbt@odlbt ~]$ export ONECLIENT_PROVIDER_HOST=172.18.0.3
 
 Then you can mount your spaces just running
 
-    oneclient -i ~/MySpaces
+    [lbt@odlbt ~]$ oneclient -i ~/MySpaces
 
 Now we are going to upload some data of the two LBT partners, INAF and
 LBTB, using Oneclient. We will use the LBT-Public files downloaded previously.
@@ -535,28 +538,28 @@ keyword in the fits headers.
 
 First, enter and explore the spaces you just mounted
 
-    cd ~/MySpaces
+    [lbt@odlbt ~]$ cd ~/MySpaces
 
 create the folders with the year number
 
-    mkdir INAF/2015
-    mkdir INAF/2014
-    mkdir LBTB/2014
+    [lbt@odlbt MySpaces]$ mkdir INAF/2015
+    [lbt@odlbt MySpaces]$ mkdir INAF/2014
+    [lbt@odlbt MySpaces]$ mkdir LBTB/2014
 
 then upload/copy files of INAF in INAF space according to the year
 
     cd ~/LBT-Public/INAF
-    cp -v luci.2014*fits ~/MySpaces/INAF/2014/
-    cp -v luci.2015*fits ~/MySpaces/INAF/2015/
+    [lbt@odlbt INAF]$ cp -v luci.2014*fits ~/MySpaces/INAF/2014/
+    [lbt@odlbt INAF]$ cp -v luci.2015*fits ~/MySpaces/INAF/2015/
 
 and files of LBTB in LBTB space
 
-    cd ~/LBT-Public/LBTB
-	cp -v luci.2014*fits ~/MySpaces/LBTB/2014/
+    [lbt@odlbt ~]$ cd ~/LBT-Public/LBTB
+    [lbt@odlbt LBTB]$ cp -v luci.2014*fits ~/MySpaces/LBTB/2014/
 
 Now we have finished to upload data, so we can unmount the spaces
 
-    oneclient -u ~/MySpaces
+    [lbt@odlbt ~]$ oneclient -u ~/MySpaces
 
 You can check in the webpage that everything is in the right place.
 Go to your LBT Zone webpage and sign in as admin.
@@ -585,8 +588,8 @@ fits header, and saves them in a json file suitable to be loaded in Onedata.
 Generate the json metadata files for all the INAF files you have uploaded
 in the previous section
 
-    cd ~/LBT-Public/INAF
-    extract-metadata *fits
+    [lbt@odlbt ~]$ cd ~/LBT-Public/INAF
+    [lbt@odlbt INAF]$ extract-metadata *fits
 
 Now json files can be uploaded as metadata in Onedata with this command
 
@@ -597,8 +600,8 @@ are, including the path in Onedata. This command will connect to provider-name
 using CDMI API and upload file.json metadata to file stored in space-name.
 Therefore you will run something like
 
-    odlbt metadata add -p Trieste -s INAF/2014 luci.2014*.json
-    odlbt metadata add -p Trieste -s INAF/2015 luci.2015*.json
+    [lbt@odlbt INAF]$ odlbt metadata add -p Trieste -s INAF/2014 luci.2014*.json
+    [lbt@odlbt INAF]$ odlbt metadata add -p Trieste -s INAF/2015 luci.2015*.json
 
 To check that the metadata have been correctly added enter the webpage,
 go to the INAF space and select the *Show metadata* button at the right of the file name.
